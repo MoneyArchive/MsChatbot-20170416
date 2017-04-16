@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using Microsoft.ProjectOxford.Face;
 using Microsoft.ProjectOxford.Vision;
 using Newtonsoft.Json;
 
@@ -27,10 +28,10 @@ namespace Bot_Application1.Dialogs
 
             if (activity.Attachments?.Any() == true && activity.Attachments.FirstOrDefault()?.ContentType.StartsWith("image") == true)
             {
-                VisionServiceClient client = new VisionServiceClient("809703eae3894ddf9e2e9b9d33b6cab1");
                 string url = activity.Attachments.First().ContentUrl;
-                var output = await client.AnalyzeImageAsync(url, new VisualFeature[] { VisualFeature.Description });
-                await context.PostAsync(output.Description.Captions.First().Text);
+                FaceServiceClient client = new FaceServiceClient("e2b7e3cb70614c198312769804e1c0fd");
+                var output = await client.DetectAsync(url, true, false, new FaceAttributeType[] { FaceAttributeType.Age, FaceAttributeType.Gender });
+                await context.PostAsync($"男性: {output.Count(x => x.FaceAttributes.Gender == "male")}, 女性: {output.Count(x => x.FaceAttributes.Gender == "female")}");
             }
             else
             {
