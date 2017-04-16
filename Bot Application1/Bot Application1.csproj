@@ -122,6 +122,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="App_Data\YouBikeTP.json" />
+    <None Include="Properties\PublishProfiles\mschatbot-20170416 - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
