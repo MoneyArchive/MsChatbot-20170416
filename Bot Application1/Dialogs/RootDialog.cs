@@ -25,11 +25,11 @@ namespace Bot_Application1.Dialogs
         {
             var activity = await result as Activity;
 
-            if (activity.Attachments.Any() && activity.Attachments.First().ContentType.StartsWith("image"))
+            if (activity.Attachments?.Any() == true && activity.Attachments.FirstOrDefault()?.ContentType.StartsWith("image") == true)
             {
                 VisionServiceClient client = new VisionServiceClient("809703eae3894ddf9e2e9b9d33b6cab1");
                 string url = activity.Attachments.First().ContentUrl;
-                var output = await client.AnalyzeImageAsync(url, new VisualFeature[] {VisualFeature.Description});
+                var output = await client.AnalyzeImageAsync(url, new VisualFeature[] { VisualFeature.Description });
                 await context.PostAsync(output.Description.Captions.First().Text);
             }
             else
